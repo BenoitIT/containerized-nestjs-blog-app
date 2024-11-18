@@ -6,10 +6,9 @@ import { Global, Module } from '@nestjs/common';
   imports: [],
   providers: [
     {
-      provide: DataSource, // add the datasource as a provider
+      provide: DataSource, 
       inject: [],
       useFactory: async () => {
-        // using the factory function to create the datasource instance
         try {
           const dataSource = new DataSource({
             type: 'postgres',
@@ -19,9 +18,9 @@ import { Global, Module } from '@nestjs/common';
             password: '1234',
             database: 'usesblogs',
             synchronize: true,
-            entities: [`${__dirname}/../**/**.entity{.ts,.js}`], // this will automatically load all entity file in the src folder
+            entities: [`${__dirname}/../**/**.entity{.ts,.js}`], 
           });
-          await dataSource.initialize(); // initialize the data source
+          await dataSource.initialize(); 
           console.log('Database connected successfully');
           return dataSource;
         } catch (error) {
