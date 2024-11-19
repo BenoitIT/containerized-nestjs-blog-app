@@ -10,15 +10,12 @@ import {
 import { UserService } from "./user.service";
 import { UserData } from "src/interfaces/user.interface";
 import { User } from "src/entities/user.entity";
-import { CacheInterceptor, CacheKey } from "@nestjs/cache-manager";
 
 @Controller("users")
-// @UseInterceptors(CacheInterceptor)
 export class UserController {
   constructor(public userService: UserService) {}
 
   @Get()
-  // @CacheKey("MYKEY")
   getUser(): Promise<User[]> {
     return this.userService.getData();
   }
@@ -27,7 +24,6 @@ export class UserController {
     return this.userService.postdata(body);
   }
   @Get("/:user")
-  // @CacheKey("MYKEY")
   async getUserById(@Param() param: { user: number }) {
     const user = await this.userService.getUser(param);
     if (user) {
