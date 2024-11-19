@@ -2,7 +2,6 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  Index,
   ManyToOne,
   JoinColumn,
 } from "typeorm";

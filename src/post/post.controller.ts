@@ -1,34 +1,46 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Post } from "src/entities/post.entity";
-import { Repository } from "typeorm";
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Param,
+  Delete,
+  UseInterceptors,
+} from "@nestjs/common";
+import { Post as postModel } from "src/entities/post.entity";
+import { PostService } from "./post.service";
 
-@Injectable()
+@Controller("post")
+// @UseInterceptors(CacheInterceptor)
 export class PostController {
-  constructor(
-    @InjectRepository(Post)
-    private PostRepository: Repository<Post>
-  ) {}
-  getData(): Promise<Post[]> {
-    return this.PostRepository.find();
+  constructor(public postService: PostService) {}
+
+  @Get()
+  // @CacheKey("MYKEY")
+  getUser(): Promise<postModel[]> {
+    return this.postService.getData();
   }
-  postdata(payload: Post) {
-    try {
-      return this.PostRepository.save(payload);
-    } catch (err) {
-      console.error(err);
+  @Post()
+  create(@Body() body: postModel) {
+    return this.postService.postdata(body);
+  }
+  @Get("/:user")
+  // @CacheKey("MYKEY")
+  async getUserById(@Param() param: { post: number }) {
+    const user = await this.postService.getPost(param);
+    if (user) {
+      return { message: "user is found successfully", user };
+    } else {
+      return { message: "no user found", user: null };
     }
   }
-  getUser({ user }: { user: number }) {
-    return this.PostRepository.findOne({
-      where: {
-        id: Number(user),
-      },
-    });
-  }
-  deleteUser({ user }: { user: number }) {
-    return this.PostRepository.delete({
-      id: Number(user),
-    });
+  @Delete("/:user")
+  async deleteUserById(@Param() param: { post: number }) {
+    const deletedUser = await this.postService.deletePost(param);
+    if (deletedUser.affected > 0) {
+      return { message: "post is deleted successfully" };
+    } else {
+      return { message: "post didn't found" };
+    }
   }
 }
