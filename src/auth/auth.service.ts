@@ -25,17 +25,17 @@ export class AuthService {
     if (user) {
       if (user.password === password) {
         const payload = {
-          sub: user.id,
+          id: user.id,
           email: user.email,
           name: user.firstName,
         };
         const accessToken = await this.jwtService.signAsync(payload);
         return { message: "You are loggedin successfully", token: accessToken };
       } else {
-        throw new UnauthorizedException();
+        throw new UnauthorizedException("Incorrect password");
       }
     } else {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Incorrect username and password");
     }
   }
 }

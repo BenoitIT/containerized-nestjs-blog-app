@@ -1,8 +1,18 @@
-import { Body, Controller, Get, Post, Param, Delete } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+} from "@nestjs/common";
 import { Post as postModel } from "src/entities/post.entity";
 import { PostService } from "./post.service";
+import { AuthGuard } from "src/auth/auth.guard";
 
-@Controller("post")
+@Controller("posts")
 export class PostController {
   constructor(public postService: PostService) {}
 
@@ -11,19 +21,22 @@ export class PostController {
     return this.postService.getData();
   }
   @Post()
-  create(@Body() body: postModel) {
+  @UseGuards(AuthGuard)
+  create(@Request() req: any, @Body() body: postModel) {
+    body.writter = req.user.id;
     return this.postService.postdata(body);
   }
   @Get("/:post")
   async getUserById(@Param() param: { post: number }) {
-    const user = await this.postService.getPost(param);
-    if (user) {
-      return { message: "user is found successfully", user };
+    const post = await this.postService.getPost(param);
+    if (post) {
+      return { message: "post is found successfully", post };
     } else {
-      return { message: "no user found", user: null };
+      return { message: "no post found", post: null };
     }
   }
   @Delete("/:post")
+  @UseGuards(AuthGuard)
   async deleteUserById(@Param() param: { post: number }) {
     const deletedUser = await this.postService.deletePost(param);
     if (deletedUser.affected > 0) {
