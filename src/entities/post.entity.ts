@@ -6,6 +6,8 @@ import {
   JoinColumn,
 } from "typeorm";
 import { User } from "./user.entity";
+import { PostCategory } from "./postcategories.entity";
+
 @Entity("Post", { schema: "public" })
 export class Post {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })
@@ -16,9 +18,15 @@ export class Post {
 
   @Column("text", { name: "description" })
   description: string;
+
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn({ name: "writter" })
-  writter: User;
+  writter: User; 
+
+  @ManyToOne(() => PostCategory, (category) => category.posts)
+  @JoinColumn({ name: "category" })
+  category: PostCategory;
+
   @Column("timestamp without time zone", {
     name: "createdAt",
     default: () => "CURRENT_TIMESTAMP",
