@@ -13,7 +13,7 @@ export class PostService {
   getData(): Promise<Post[]> {
     return this.PostRepository.find();
   }
-  postdata(payload: Post ) {
+  postdata(payload: Post) {
     try {
       return this.PostRepository.save(payload);
     } catch (err) {

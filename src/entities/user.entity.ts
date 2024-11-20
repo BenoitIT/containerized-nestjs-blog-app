@@ -18,7 +18,8 @@ export class User {
   phone: string;
   @Column("text", { name: "gender" })
   gender: string;
-
+  @Column("text", { name: "role", default: "user" })
+  role: string;
   @Column("text", { name: "password" })
   password: string;
 

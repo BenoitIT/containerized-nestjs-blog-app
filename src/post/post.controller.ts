@@ -17,7 +17,7 @@ export class PostController {
   constructor(public postService: PostService) {}
 
   @Get()
-  getUser(): Promise<postModel[]> {
+  getPost(): Promise<postModel[]> {
     return this.postService.getData();
   }
   @Post()
@@ -27,7 +27,7 @@ export class PostController {
     return this.postService.postdata(body);
   }
   @Get("/:post")
-  async getUserById(@Param() param: { post: number }) {
+  async getPostById(@Param() param: { post: number }) {
     const post = await this.postService.getPost(param);
     if (post) {
       return { message: "post is found successfully", post };
@@ -37,7 +37,7 @@ export class PostController {
   }
   @Delete("/:post")
   @UseGuards(AuthGuard)
-  async deleteUserById(@Param() param: { post: number }) {
+  async deletePostById(@Param() param: { post: number }) {
     const deletedUser = await this.postService.deletePost(param);
     if (deletedUser.affected > 0) {
       return { message: "post is deleted successfully" };
