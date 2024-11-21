@@ -7,8 +7,8 @@ import {
   Delete,
   Body,
 } from "@nestjs/common";
-import { AdminAuthGuard, AuthGuard } from "src/auth/auth.guard";
-import { PostCategory } from "src/entities/postcategories.entity";
+import { AdminAuthGuard} from "../auth/auth.guard";
+import { PostCategory } from "../entities/postcategories.entity";
 import { CategoryService } from "./category.service";
 
 @Controller("category")

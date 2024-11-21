@@ -5,11 +5,10 @@ import {
   Post,
   Param,
   Delete,
-  UseInterceptors,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { UserData } from "src/interfaces/user.interface";
-import { User } from "src/entities/user.entity";
+import { User } from "../entities/user.entity";
 
 @Controller("users")
 export class UserController {

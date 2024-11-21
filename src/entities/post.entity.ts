@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from "typeorm";
 import { User } from "./user.entity";
 import { PostCategory } from "./postcategories.entity";
+import { Like } from "./like.entity";
 
 @Entity("Post", { schema: "public" })
 export class Post {
@@ -21,7 +23,7 @@ export class Post {
 
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn({ name: "writter" })
-  writter: User; 
+  writter: User;
 
   @ManyToOne(() => PostCategory, (category) => category.posts)
   @JoinColumn({ name: "category" })
@@ -32,4 +34,6 @@ export class Post {
     default: () => "CURRENT_TIMESTAMP",
   })
   createdAt: Date;
+  @OneToMany(() => Like, (like) => like.post)
+  likes: Like[];
 }

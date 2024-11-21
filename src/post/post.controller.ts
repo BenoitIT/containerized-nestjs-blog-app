@@ -8,9 +8,9 @@ import {
   UseGuards,
   Request,
 } from "@nestjs/common";
-import { Post as postModel } from "src/entities/post.entity";
+import { Post as postModel } from "../entities/post.entity";
 import { PostService } from "./post.service";
-import { AuthGuard } from "src/auth/auth.guard";
+import { AuthGuard } from "../auth/auth.guard";
 
 @Controller("posts")
 export class PostController {

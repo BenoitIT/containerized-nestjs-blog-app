@@ -1,8 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Post } from "src/entities/post.entity";
-import { PostCategory } from "src/entities/postcategories.entity";
+import { PostCategory } from "../entities/postcategories.entity";
 
 @Injectable()
 export class CategoryService {
