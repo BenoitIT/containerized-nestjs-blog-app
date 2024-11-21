@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { postData } from "src/interfaces/post.interface";
 import { Repository } from "typeorm";
 import { Post } from "src/entities/post.entity";
 
@@ -11,7 +10,24 @@ export class PostService {
     private PostRepository: Repository<Post>
   ) {}
   getData(): Promise<Post[]> {
-    return this.PostRepository.find();
+    return this.PostRepository.find({
+      relations: ["category", "writter"],
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        createdAt: true,
+        writter: {
+          id: true,
+          firstName: true,
+          lastName: true,
+        },
+        category: {
+          id: true,
+          name: true,
+        },
+      },
+    });
   }
   postdata(payload: Post) {
     try {
