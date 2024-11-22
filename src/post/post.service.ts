@@ -2,15 +2,18 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Post } from "../entities/post.entity";
+import { Like } from "../entities/like.entity";
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post)
-    private PostRepository: Repository<Post>
+    private postRepository: Repository<Post>,
+    @InjectRepository(Like)
+    private likeRepository: Repository<Like>
   ) {}
-  getData(): Promise<Post[]> {
-    return this.PostRepository.find({
+  async getData(currentUserId: number): Promise<any[]> {
+    const posts = await this.postRepository.find({
       relations: ["category", "writter"],
       select: {
         id: true,
@@ -28,23 +31,36 @@ export class PostService {
         },
       },
     });
+    const userLikes = await this.likeRepository.find({
+      where: { user: { id: currentUserId } },
+      relations: ["post"],
+    });
+    const likedPostIds = new Set(userLikes.map((like) => like.post.id));
+
+    return posts.map((post) => ({
+      ...post,
+      isLikedByCurrentUser: likedPostIds.has(post.id),
+    }));
   }
+
   postdata(payload: Post) {
     try {
-      return this.PostRepository.save(payload);
+      return this.postRepository.save(payload);
     } catch (err) {
       console.error(err);
     }
   }
+
   getPost({ post }: { post: number }) {
-    return this.PostRepository.findOne({
+    return this.postRepository.findOne({
       where: {
         id: Number(post),
       },
     });
   }
+
   deletePost({ post }: { post: number }) {
-    return this.PostRepository.delete({
+    return this.postRepository.delete({
       id: Number(post),
     });
   }

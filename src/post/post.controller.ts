@@ -17,8 +17,8 @@ export class PostController {
   constructor(public postService: PostService) {}
 
   @Get()
-  getPost(): Promise<postModel[]> {
-    return this.postService.getData();
+  getPost(@Request() req: any,): Promise<postModel[]> {
+    return this.postService.getData(req?.user?.id);
   }
   @Post()
   @UseGuards(AuthGuard)

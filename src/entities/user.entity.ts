@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Post } from "./post.entity";
 import { Like } from "./like.entity";
+import { Comment } from "./comment.entity";
 @Entity("User", { schema: "public" })
 export class User {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })
@@ -33,6 +34,7 @@ export class User {
   @OneToMany(() => Post, (post) => post.writter)
   posts: Post[];
   @OneToMany(() => Like, (like) => like.user)
-likes: Like[];
-  
+  likes: Like[];
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comment: Comment[];
 }
