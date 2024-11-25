@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { LikesModule } from './likes/likes.module';
 import { CommentModule } from './comment/comment.module';
+import { BookmarkModule } from './bookmark/bookmark.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CommentModule } from './comment/comment.module';
     CategoryModule,
     LikesModule,
     CommentModule,
+    BookmarkModule,
   ],
   controllers: [AppController],
   providers: [AppService],

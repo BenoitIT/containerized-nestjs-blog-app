@@ -10,6 +10,7 @@ import { User } from "./user.entity";
 import { PostCategory } from "./postcategories.entity";
 import { Like } from "./like.entity";
 import { Comment } from "./comment.entity";
+import { Bookmark } from "./bookmark.entity";
 
 @Entity("Post", { schema: "public" })
 export class Post {
@@ -39,4 +40,6 @@ export class Post {
   likes: Like[];
   @OneToMany(() => Comment, (comment) => comment.post)
   comment: Comment[];
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.post)
+  bookmarks: Bookmark[];
 }
